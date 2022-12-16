@@ -1,20 +1,11 @@
-import {
-  TableContainer,
-  Paper,
-  Table,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
-  Button,
-} from "@mui/material";
+import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, Button } from "@mui/material";
 import { Movie } from "models";
 import router from "next/router";
 import classes from "./classes.module.css";
 
 type Props = {
   movies: Movie[];
-  handleClick: (id: number) => void;
+  handleClick?: (id: number) => void;
 };
 
 export default function MoviesList({ movies, handleClick }: Props) {
@@ -41,7 +32,7 @@ export default function MoviesList({ movies, handleClick }: Props) {
             <TableCell align="center" className={classes.tableCell}>
               Date de sortie
             </TableCell>
-            <TableCell align="center" className={classes.tableCell}></TableCell>
+            {handleClick && <TableCell align="center" className={classes.tableCell}></TableCell>}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -60,9 +51,11 @@ export default function MoviesList({ movies, handleClick }: Props) {
               <TableCell align="center">{movie.vote_count}</TableCell>
               <TableCell align="center">{movie.popularity}</TableCell>
               <TableCell align="center">{movie.release_date}</TableCell>
-              <TableCell align="center">
-                <Button onClick={() => handleClick(movie.id)}>Supprimer</Button>
-              </TableCell>
+              {handleClick && (
+                <TableCell align="center">
+                  <Button onClick={() => handleClick(movie.id)}>Supprimer</Button>
+                </TableCell>
+              )}
             </TableRow>
           ))}
         </TableBody>

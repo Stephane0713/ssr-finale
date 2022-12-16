@@ -11,8 +11,6 @@ import {
 
 export default function PlaylistCreationPage() {
   const [playlist, setPlaylist] = React.useState<LocalStoragePlaylist>({
-    name: undefined,
-    description: undefined,
     movies: [],
   });
 
@@ -38,8 +36,8 @@ export default function PlaylistCreationPage() {
             method: "POST",
             body: JSON.stringify({
               movieIds: playlist.movies.map((movie) => movie.id),
-              ...(playlist.name && { name: playlist.name }),
-              ...(playlist.description && {
+              ...(playlist?.name && { name: playlist.name }),
+              ...(playlist?.description && {
                 description: playlist.description,
               }),
             }),
@@ -65,8 +63,7 @@ export default function PlaylistCreationPage() {
         <input ref={descRef} defaultValue={playlist.description} type="text" />
         <button
           onClick={() => {
-            descRef.current?.value &&
-              changePlaylistDescription(descRef.current.value);
+            descRef.current?.value && changePlaylistDescription(descRef.current.value);
             setPlaylist(getPlaylist());
           }}
         >
