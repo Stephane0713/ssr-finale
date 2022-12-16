@@ -1,7 +1,8 @@
 import PlaylistCard from "components/PlaylistCard";
-import { Playlist } from "models";
+import { Movie, Playlist } from "models";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
+import { fetchMovie } from "services/api/tmdb";
 
 type Props = { playlist: Playlist };
 
@@ -27,9 +28,24 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 
   const res = await fetch(`http://localhost:3000/api/playlists/${playlistId}`);
-  const playlist = await res.json();
+  const playlistDb: Playlist = await res.json();
 
-  if (!playlist) return { notFound: true };
+  if (!playlistDb) return { notFound: true };
+
+  const movies: Movie[] = await Promise.all(
+    playlistDb.movies.map(({ id }) => fetchMovie(+id))
+  );
+
+  if (!Array.isArray(movies)) return { notFound: true };
+
+  const playlist = {
+    id: playlistDb.id,
+    ...(playlistDb?.name && { name: playlistDb.name }),
+    ...(playlistDb?.description && {
+      description: playlistDb.description,
+    }),
+    movies,
+  };
 
   return { props: { playlist } };
 };

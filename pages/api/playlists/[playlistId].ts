@@ -4,14 +4,17 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 const prisma = new PrismaClient();
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse<Playlist>) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse<Playlist>
+) {
   if (req.method === "GET") {
-    const { id } = req.query;
+    const { playlistId } = req.query;
 
-    if (!id) return;
+    if (!playlistId) return;
 
     const getPlaylist = await prisma.playlist.findUnique({
-      where: { id: +id },
+      where: { id: +playlistId },
       include: {
         movies: true,
       },

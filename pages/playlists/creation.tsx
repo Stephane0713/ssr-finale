@@ -7,6 +7,7 @@ import {
   changePlaylistName,
   getPlaylist,
   removeMovieFromPlaylist,
+  resetPlaylist,
 } from "services/storage/playlist";
 
 export default function PlaylistCreationPage() {
@@ -44,31 +45,42 @@ export default function PlaylistCreationPage() {
           });
           const savedPlaylist = await response.json();
           console.log(savedPlaylist);
+          if (response.ok) {
+            resetPlaylist();
+            setPlaylist(getPlaylist());
+          }
         }}
       >
         Sauvegarder la playlist
       </Button>
       <div>
-        <input ref={nameRef} defaultValue={playlist.name} type="text" />
-        <button
-          onClick={() => {
+        <label htmlFor="name">Name</label>
+        <br />
+        <input
+          id="name"
+          ref={nameRef}
+          defaultValue={playlist.name}
+          onBlur={() => {
             nameRef.current?.value && changePlaylistName(nameRef.current.value);
             setPlaylist(getPlaylist());
           }}
-        >
-          Ok
-        </button>
+          type="text"
+        />
       </div>
       <div>
-        <input ref={descRef} defaultValue={playlist.description} type="text" />
-        <button
-          onClick={() => {
-            descRef.current?.value && changePlaylistDescription(descRef.current.value);
+        <label htmlFor="desc">Description</label>
+        <br />
+        <input
+          id="desc"
+          ref={descRef}
+          defaultValue={playlist.description}
+          onBlur={() => {
+            descRef.current?.value &&
+              changePlaylistDescription(descRef.current.value);
             setPlaylist(getPlaylist());
           }}
-        >
-          Ok
-        </button>
+          type="text"
+        />
       </div>
       <MoviesList movies={playlist.movies} handleClick={handleClick} />;
     </>

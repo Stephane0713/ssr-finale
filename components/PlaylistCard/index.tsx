@@ -15,9 +15,14 @@ export default function PlaylistCard({ playlist }: Props) {
         <Typography variant="body2" color="text.secondary">
           {playlist?.description ? playlist.description : "no description"}
         </Typography>
+        <Typography variant="body2" my={2} color="text.secondary">
+          {`URL : http://localhost/playlists/${playlist.id}`}
+        </Typography>
         <Typography variant="h6">Movies</Typography>
-        {playlist.movies.map(({ id }) => (
-          <Typography variant="body2">{id}</Typography>
+        {playlist.movies.map(({ id, title }) => (
+          <Typography key={id} variant="body2">
+            {title}
+          </Typography>
         ))}
       </CardContent>
     </Card>

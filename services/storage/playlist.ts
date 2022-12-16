@@ -65,3 +65,8 @@ export const removeMovieFromPlaylist = (movieId: number): void => {
   const json = JSON.stringify(playlist);
   window.localStorage.setItem("playlist", json);
 };
+
+export const resetPlaylist = (): void => {
+  const json = JSON.stringify({ movies: [] });
+  window.localStorage.setItem("playlist", json);
+};
